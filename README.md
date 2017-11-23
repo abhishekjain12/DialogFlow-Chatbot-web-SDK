@@ -1,2 +1,2 @@
 # DialogFlow-Chatbot-web-SDK
-HTML + JS +CSS
+HTML + JS + CSS + TTS + STT
