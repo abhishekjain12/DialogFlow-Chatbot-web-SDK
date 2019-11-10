@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
 <head>
 	<title>BitsBot</title>
 
@@ -13,32 +13,33 @@
 	<script src="responsivevoice.js"></script>
 
 	<script type="text/javascript">
-        var conversation = [];
-        var accessToken = "ENTER YOUR ACCESS TOKEN HERE.";
-        var baseUrl = "https://api.api.ai/v1/";
+		const accessToken = "ENTER YOUR ACCESS TOKEN HERE.";
+		const baseUrl = "https://api.api.ai/v1/";
 
-        $(document).ready(function() {
+		$(document).ready(function() {
             $("#input").keypress(function(event) {
-                if (event.which == 13) {
+                if (event.which === 13) {
                     event.preventDefault();
                     send();
                 }
             });
             $("#rec").click(function(event) {
+            	console.log(event);
                 switchRecognition();
             });
         });
 
-        var recognition;
+		let recognition;
 
-        function startRecognition() {
+		function startRecognition() {
             recognition = new webkitSpeechRecognition();
             recognition.onstart = function(event) {
+				console.log(event);
                 updateRec();
             };
             recognition.onresult = function(event) {
-                var text = "";
-                for (var i = event.resultIndex; i < event.results.length; ++i) {
+				let text = "";
+				for (let i = event.resultIndex; i < event.results.length; ++i) {
                     text += event.results[i][0].transcript;
                 }
                 setInput(text);
@@ -87,9 +88,9 @@
 
         function send() {
             document.getElementById('load').style.display = "block";
-            var text = $("#input").val();
-            document.getElementById('input').value = "";
-            if (text == ""){
+			const text = $("#input").val();
+			document.getElementById('input').value = "";
+            if (text === ""){
 				document.getElementById('input-error').style.display = "block";
                 document.getElementById('load').style.display = "none";
 			}
@@ -106,17 +107,18 @@
                     },
                     data: JSON.stringify({query: text, lang: "en", sessionId: "somerandomthing"}),
                     success: function (data) {
-                        var respText = data.result.fulfillment.speech;
-                        console.log("Res: " + respText);
+						const respText = data.result.fulfillment.speech;
+						console.log("Res: " + respText);
                         document.getElementById('load').style.display = "none";
                         responsiveVoice.speak(respText);
                         setResponse(respText);
                     },
                     error: function () {
-                        var val = "<b>Unable to connect internet. Please connect and Try again.</b>";
-                        var template = "<div class='row'><div class='message message-bot message-error'>" + val + "</div></div>";
-                        $(".chat-window").append(template);
-                        $('.chat-window').scrollTop($('.chat-window')[0].scrollHeight);
+						const val = "<b>Unable to connect internet. Please connect and Try again.</b>";
+						const template = "<div class='row'><div class='message message-bot message-error'>" + val + "</div></div>";
+						const chatWindow = $(".chat-window");
+						chatWindow.append(template);
+                        chatWindow.scrollTop(chatWindow[0].scrollHeight);
                         document.getElementById('load').style.display = "none";
                     }
                 });
@@ -124,15 +126,17 @@
         }
 
         function setRequest(val) {
-            var template = "<div class='row'><div class='message message-user'>" + val + "</div></div>";
-            $(".chat-window").append(template);
-            $('.chat-window').scrollTop($('.chat-window')[0].scrollHeight);
+			const template = "<div class='row'><div class='message message-user'>" + val + "</div></div>";
+			const chatWindow = $(".chat-window");
+			chatWindow.append(template);
+            chatWindow.scrollTop(chatWindow[0].scrollHeight);
         }
 
         function setResponse(val) {
-            var template = "<div class='row'><div class='message message-bot'>" + val + "</div></div>";
-            $(".chat-window").append(template);
-            $('.chat-window').scrollTop($('.chat-window')[0].scrollHeight);
+			const template = "<div class='row'><div class='message message-bot'>" + val + "</div></div>";
+			const chatWindow = $(".chat-window");
+			chatWindow.append(template);
+            chatWindow.scrollTop(chatWindow[0].scrollHeight);
         }
 
 	</script>
@@ -143,7 +147,7 @@
 <div>
 
 	<div class="logo">
-		<img class="logo-img" src="logo.jpg">
+		<img class="logo-img" src="logo.jpg" alt="logo">
 		<div class="hori-line"></div>
 		<a class="bit">MyBot<a class="small">by YARD</a></a>
 		<br/><br/>
@@ -156,19 +160,19 @@
 	</div>
 
 	<div class="load" id="load">
-		<img src="loading.gif"><br/>
+		<img src="loading.gif" alt="loading"><br/>
 		<span class="load-text">Thinking...</span>
 	</div>
 
 	<div class="load" id="load-voice">
-		<img src="loading.gif"><br/>
+		<img src="loading.gif" alt="loading"><br/>
 		<span class="load-text">Listening...</span>
 	</div>
 
 	<div class="chat-window"></div>
 
 	<div class="tooltip">
-		<input id="input" type="text" placeholder="Enter your query Here..." autofocus autocomplete="true">
+		<label for="input"></label><input id="input" type="text" placeholder="Enter your query Here..." autofocus autocomplete="true">
 		<span id="input-error" class="input-error">Please enter your query here or voice search</span>
 	</div>
 	<button class="btn send tooltip" onclick="send()"><span class="tooltiptext">send</span></button>
